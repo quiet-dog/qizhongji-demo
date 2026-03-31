@@ -78,7 +78,8 @@ export default {
             if (!container) return
 
             this.scene = new THREE.Scene()
-            this.scene.background = new THREE.Color(0xa0a0a0)
+            // this.scene.background = new THREE.Color(0xa0a0a0)
+            this.scene.background = null
 
             this.camera = new THREE.PerspectiveCamera(
                 50,
@@ -87,7 +88,13 @@ export default {
                 200
             )
 
-            this.renderer = new THREE.WebGLRenderer({ antialias: true })
+            this.renderer = new THREE.WebGLRenderer({
+                antialias: true,
+                // 背景透明
+                alpha: true
+            })
+
+            this.renderer.setClearColor(0x000000, 0) // ✅ 透明背景（alpha=0）
             this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
             this.renderer.setSize(container.clientWidth, container.clientHeight)
             this.renderer.shadowMap.enabled = true
