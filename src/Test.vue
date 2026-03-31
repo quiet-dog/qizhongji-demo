@@ -79,7 +79,7 @@ export default {
 
             this.scene = new THREE.Scene()
             // this.scene.background = new THREE.Color(0xa0a0a0)
-            this.scene.background = null
+            this.scene.background = null // 透明背景
 
             this.camera = new THREE.PerspectiveCamera(
                 50,
@@ -125,6 +125,8 @@ export default {
 
             model.position.sub(center)
             model.rotation.y = -0.7
+            // 调整模型大小
+            // model.scale.set(2, 2, 2)
 
             const maxDim = Math.max(size.x, size.y, size.z)
             const fov = this.camera.fov * (Math.PI / 180)
