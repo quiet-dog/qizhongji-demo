@@ -146,7 +146,7 @@ export default {
         loadModel() {
             const loader = new GLTFLoader()
 
-            loader.load('/jiqi2.glb', (gltf) => {
+            loader.load('/jiqi3.glb', (gltf) => {
                 const model = gltf.scene
                 this.scene.add(model)
 
@@ -154,7 +154,22 @@ export default {
 
                 // 初始化所有动画
                 gltf.animations.forEach((clip) => {
-                    const action = this.mixer.clipAction(clip)
+                    // alert(clip.name)
+                    if (clip.name === 'idle') {
+                        // const idleAction = this.mixer.clipAction(clip)
+                        // idleAction.play()
+                        // this.currentActions[clip.name] = idleAction
+                        return
+                    }
+                    let action = null
+                    if (clip.name === 'rotation') {
+                        // clip.duration = 4 // 强制设置旋转动画为4秒
+                        const additiveClip = THREE.AnimationUtils.makeClipAdditive(clip)
+                        action = this.mixer.clipAction(additiveClip)
+                    } else {
+                        action = this.mixer.clipAction(clip)
+                    }
+                    // const action = this.mixer.clipAction(clip)
                     action.clampWhenFinished = true
 
                     this.currentActions[clip.name] = action
@@ -188,7 +203,7 @@ export default {
                 const params = this.actionParams[name]
 
                 // 进度滑块
-                folder.add(params, 'progress', 0, 100, 0.1)
+                folder.add(params, 'progress', 0, 360, 0.1)
                     .name('进度 (%)')
                     .onChange((percent) => {
                         const action = params.action
