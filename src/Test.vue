@@ -124,6 +124,7 @@ export default {
             box.getSize(size)
 
             model.position.sub(center)
+            // 模型旋转调整（如果需要）
             model.rotation.y = -0.7
             // 调整模型大小
             // model.scale.set(2, 2, 2)
@@ -132,7 +133,10 @@ export default {
             const fov = this.camera.fov * (Math.PI / 180)
             let distance = (maxDim / 2) / Math.tan(fov / 2) * 1.15
 
+            // 相机位置调整
             this.camera.position.set(0.4, size.y * 0.25, distance)
+
+            // 相机目标调整
             this.controls.target.set(0, size.y * 0.15, 0)
 
             this.camera.updateProjectionMatrix()
