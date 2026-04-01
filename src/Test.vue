@@ -53,6 +53,10 @@ export default {
             type: Number,
             default: 0
         },
+        idle: {
+            type: Number,
+            default: 0
+        }
     },
 
     mounted() {
@@ -101,8 +105,8 @@ export default {
             container.appendChild(this.renderer.domElement)
 
             // 光照
-            this.scene.add(new THREE.HemisphereLight(0xffffff, 0x8d8d8d, 1.2))
-            const dirLight = new THREE.DirectionalLight(0xffffff, 1.4)
+            this.scene.add(new THREE.HemisphereLight(0xffffff, 0x8d8d8d, 1.5))
+            const dirLight = new THREE.DirectionalLight(0xffffff, 10.8)
             dirLight.position.set(10, 15, 10)
             this.scene.add(dirLight)
 
@@ -110,6 +114,7 @@ export default {
             this.controls = new OrbitControls(this.camera, this.renderer.domElement)
             this.controls.enableDamping = true
             this.controls.dampingFactor = 0.08
+            this.controls.enabled = false;
 
             this.clock = new THREE.Clock()
 
@@ -155,12 +160,12 @@ export default {
                 // 初始化所有动画
                 gltf.animations.forEach((clip) => {
                     // alert(clip.name)
-                    if (clip.name === 'idle') {
-                        // const idleAction = this.mixer.clipAction(clip)
-                        // idleAction.play()
-                        // this.currentActions[clip.name] = idleAction
-                        return
-                    }
+                    // if (clip.name === 'idle') {
+                    // const idleAction = this.mixer.clipAction(clip)
+                    // idleAction.play()
+                    // this.currentActions[clip.name] = idleAction
+                    // return
+                    // }
                     let action = null
                     if (clip.name === 'rotation') {
                         // clip.duration = 4 // 强制设置旋转动画为4秒
@@ -343,6 +348,15 @@ export default {
             const action = params.action
             const duration = action.getClip().duration || 1
             action.time = (newVal) * duration
+        },
+        idle(newVal) {
+            const have = this.currentActions['idle']
+
+            if (!have) return
+            const params = this.actionParams['idle']
+            const action = params.action
+            const duration = action.getClip().duration || 1
+            action.time = (newVal) * duration
         }
     }
 }
@@ -353,5 +367,6 @@ export default {
     width: 100%;
     height: 100vh;
     overflow: hidden;
+    background-color: #00FFFF;
 }
 </style>
